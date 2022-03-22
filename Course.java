@@ -10,4 +10,8 @@ public class Course {
     {
         return id;
     }
+    @Override
+    public String toString() {
+        return "Course: "+id+" - "+name;
+    }
 }

@@ -138,4 +138,43 @@ public class Asker {
         
         return -1;//student doesn't exist in the give list
     } 
+    //Select an option
+    public static int askForSelection(Scanner s,int selectionSize)
+    {
+        System.out.println("Enter Your Option:");
+        String opt=s.nextLine();
+        //check for null
+        if(opt==null||opt.equals(""))
+        {
+            //empty input
+            System.out.println("You mustn't leave your option empty");
+            System.out.println("----------------------------");
+            System.out.println("Please retry enter an valid option:");
+            //retry
+            return askForSelection(s, selectionSize);
+        }
+        //parse to int
+        try {
+            int value =Integer.parseInt(opt);
+            if(value<selectionSize&&value>=0)
+            {
+                //valid option
+                return value;
+            }
+            else{
+                //invalid
+                System.out.println("Your option is invalid");
+                System.out.println("----------------------------");
+                System.out.println("Please retry enter an correct option:");
+                return askForSelection(s, selectionSize);
+            }
+        }
+        catch(NumberFormatException e){
+            //option is not valid
+            System.out.println("You must input the option in positive number only");
+            System.out.println("----------------------------");
+            System.out.println("Please retry enter an valid option:");
+            return askForSelection(s, selectionSize);
+        }
+    }
 }

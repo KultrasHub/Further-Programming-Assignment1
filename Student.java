@@ -12,4 +12,8 @@ public class Student
     {
         return id;
     }
+    @Override
+    public String toString() {
+        return "Student: "+id+ " - " +name+ " - "+birthDate;
+    }
 }
