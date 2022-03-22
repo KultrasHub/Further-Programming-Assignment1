@@ -43,8 +43,29 @@ public class StudentEnrolment {
             return false;
         }
     }
+    public boolean compare(Course c, String sem)
+    {
+        if(c==null)
+        {
+            return false;
+        }
+        //check course
+        if(c==course)
+        {
+            //check sem
+            if(sem==semester)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     //getter
     public Course getCourse(){
         return course;
+    }
+    public Student getStudent()
+    {
+        return student;
     }
 }

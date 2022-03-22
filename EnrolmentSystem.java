@@ -2,7 +2,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
-    private ArrayList<StudentEnrolment> enrolmentList=new ArrayList<StudentEnrolment>();
+    private ArrayList<StudentEnrolment> enrolmentList;
+    //Constructor
+    public EnrolmentSystem()
+    {
+        enrolmentList=new ArrayList<StudentEnrolment>();
+    }
+    
     //Condition checking
     //check if an enrolment has already existed in list
     private static boolean checkExisted(ArrayList<StudentEnrolment> list, StudentEnrolment enrolment) 
@@ -95,6 +101,98 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         //enrolment cannot be found in list
         System.out.println("Enrolment cannot be found in enrolment data");
+    }
+    
+    @Override
+    public ArrayList<StudentEnrolment> getAll(Course c, String sem) {
+        ArrayList<StudentEnrolment> list=new ArrayList<StudentEnrolment>();
+        //find all student of has course of sem
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            //compare course and sem
+            if(enrolmentList.get(i).compare(c, sem))
+            {
+                //matched sem
+                list.add(enrolmentList.get(i));
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public ArrayList<StudentEnrolment> getAll(Student s, String sem) {
+        ArrayList<StudentEnrolment> list=new ArrayList<StudentEnrolment>();
+        //find all student of has course of sem
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            //compare course and sem
+            if(enrolmentList.get(i).compare(s, sem))
+            {
+                //matched sem
+                list.add(enrolmentList.get(i));
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public void printAll(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
+        System.out.println("----------------------------");
+        //ask for Course
+        Course c=Asker.askForCourseID(s, cList);
+        //ask for sem
+        String sem=Asker.askForSemesterID(s, semList);
+        //find all student of has course of sem
+        System.out.println("Students in "+c.toString()+" in "+sem);
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            //compare course and sem
+            if(enrolmentList.get(i).compare(c, sem))
+            {
+                //print
+                System.out.println(enrolmentList.get(i).getStudent().toString());
+            }
+        }
+        //ask if user want to save into csv
+        System.out.println("----------------------------");
+        System.out.println("Do you want to save report to CSV file?");
+        System.out.println("0.Yes");
+        System.out.println("1.No");
+        int chosen=Asker.askForSelection(s, 2);
+        if(chosen==0)
+        {
+            //use get all to get data and save data to csv
+        }
+    }
+
+    @Override
+    public void printAll(ArrayList<Student> sList, Scanner s, ArrayList<String> semList) {
+        System.out.println("----------------------------");
+        //ask for student
+        Student student=Asker.askForStudentID(s, sList);
+        //ask for sem
+        String sem=Asker.askForSemesterID(s, semList);
+        //find all course of the student
+        System.out.println("course of "+ student.toString()+" in "+ sem);
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            //compare student and sem
+            if(enrolmentList.get(i).compare(student, sem))
+            {
+                //matched
+                System.out.println(enrolmentList.get(i).getCourse().toString());
+            }
+        }
+         //ask if user want to save into csv
+         System.out.println("----------------------------");
+         System.out.println("Do you want to save report to CSV file?");
+         System.out.println("0.Yes");
+         System.out.println("1.No");
+         int chosen=Asker.askForSelection(s, 2);
+         if(chosen==0)
+         {
+             //use get all to get data and save data to csv
+         }
     }
     
 
