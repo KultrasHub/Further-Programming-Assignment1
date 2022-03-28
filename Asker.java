@@ -5,6 +5,8 @@ public class Asker {
     //asking 
     public static Student askForStudentID(Scanner s,ArrayList<Student> sList )
     {
+        System.out.println("Students: ");
+        sList.forEach( e -> System.out.println(e));
         //ask for student id
         System.out.println("Enter Student ID:");
         String studentID=s.nextLine();
@@ -18,7 +20,7 @@ public class Asker {
             //provide option
             System.out.println("Please retry:(Enter 'exit' to return to main menu)");
             //
-            askForStudentID(s, sList);
+            return askForStudentID(s, sList);
         }
         else if(result==-2)
         {
@@ -50,7 +52,9 @@ public class Asker {
     //course
     public static Course askForCourseID(Scanner s,ArrayList<Course> cList )
     {
-        //ask for student id
+        System.out.println("Courses: ");
+        cList.forEach( e -> System.out.println(e));
+        //ask for course id
         System.out.println("Enter Course ID:");
         String cID=s.nextLine();
         //check if Student exist in List
@@ -63,7 +67,7 @@ public class Asker {
             //provide option
             System.out.println("Please retry:(Enter 'exit' to return to main menu)");
             //
-            askForCourseID(s, cList);
+            return askForCourseID(s, cList);
         }
         else if(result==-2)
         {
@@ -96,6 +100,8 @@ public class Asker {
     //course
     public static String askForSemesterID(Scanner s,ArrayList<String> semList )
     {
+        System.out.println("available semester");
+        semList.forEach( e -> System.out.println(e));
         //ask for student id
         System.out.println("Enter Semester ID:");
         String semID=s.nextLine();
@@ -109,7 +115,7 @@ public class Asker {
             //provide option
             System.out.println("Please retry:(Enter 'exit' to return to main menu)");
             //
-            askForSemesterID(s, semList);
+            return askForSemesterID(s, semList);
         }
         else if(result==-2)
         {

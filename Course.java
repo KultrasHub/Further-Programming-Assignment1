@@ -52,6 +52,10 @@ public class Course {
     {
         return id;
     }
+    public ArrayList<String> getSem()
+    {
+        return semList;
+    }
     @Override
     public String toString() {
         return "Course: "+id+" - "+name;

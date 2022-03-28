@@ -31,10 +31,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("----------------------------");
         //ask for student id
         Student student=Asker.askForStudentID(s, sList);
-        //ask for semester id
+        //ask for Course id
         Course course=Asker.askForCourseID(s, cList);
-        //ask for course id
-        String sem=Asker.askForSemesterID(s, semList);
+        //ask for Semester id
+        String sem=Asker.askForSemesterID(s, course.getSem());
         //Create enrolment
         StudentEnrolment se=new StudentEnrolment(student, course, sem);
         //check if enrolment has addable
@@ -45,6 +45,13 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             //fail to add enrolment
             System.out.println("Fail to add enrolment to enrolment data");
         }
+    }
+    //add new courses to a student within a semester
+    @Override
+    public void add(Scanner s, Student std, ArrayList<Course> cList, String sem) {
+        //Asking for info and extract data
+        System.out.println("----------------------------");
+        //display course a
     }
 
     @Override
@@ -103,6 +110,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Enrolment cannot be found in enrolment data");
     }
     
+    @Override
+    public StudentEnrolment getOne(Student s) {
+       //get the first enrollment of the student
+       for(int i=0;i<enrolmentList.size();i++)
+       {
+           if(enrolmentList.get(i).compare(s)){
+               return enrolmentList.get(i);
+           }
+       }
+       //cannot find any enrolment of the student
+        return null;
+    } 
     @Override
     public ArrayList<StudentEnrolment> getAll(Course c, String sem) {
         ArrayList<StudentEnrolment> list=new ArrayList<StudentEnrolment>();
@@ -198,72 +217,72 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         //Initualize enrolment 
         EnrolmentSystem enrolment=new EnrolmentSystem();
         //Create Students
-        Student[] studentList=new Student[10];
-        studentList[0]=new Student("S101312", "Cercy Lannister");
-        studentList[1]=new Student("S102732", "Harry Potter","8/28/2001" );
-        studentList[2]=new Student("S103821", "Jon Snow");
-        studentList[3]=new Student("S102192", "Tyrion Lannister","6/5/2000");
-        studentList[4]=new Student("S111322", "Eddard Stark");
-        studentList[5]=new Student("S290382", "Sansa Stark");
-        studentList[6]=new Student("S287423", "Daenerys Targaryen","8/28/2001");
-        studentList[7]=new Student("S189742", "Brienne Of Tarth","3/4/2000 ");
-        studentList[8]=new Student("S012302", "Petyr Baelish");
-        studentList[9]=new Student("S928323", "Stannis Baratheon");
+        ArrayList<Student> studentList= new ArrayList<Student>();
+        studentList.add(new Student("S101312", "Cercy Lannister"));
+        studentList.add(new Student("S102732", "Harry Potter","8/28/2001"));
+        studentList.add(new Student("S103821", "Jon Snow"));
+        studentList.add(new Student("S102192", "Tyrion Lannister","6/5/2000"));
+        studentList.add(new Student("S111322", "Eddard Stark"));
+        studentList.add(new Student("S290382", "Sansa Stark"));
+        studentList.add(new Student("S287423", "Daenerys Targaryen","8/28/2001"));
+        studentList.add(new Student("S189742", "Brienne Of Tarth","3/4/2000 "));
+        studentList.add(new Student("S012302", "Petyr Baelish"));
+        studentList.add(new Student("S928323", "Stannis Baratheon"));
         //Create Semester
-        String[] semList=new String[6]; 
-        semList[0]="282AoC";//The Age of chaos
-        semList[1]="392SA";//The Sorcery Ages
-        semList[2]="123EoT";//The Era of Trust
-        semList[3]="82AoT";//The Aeon of Titans
-        semList[4]="99EoD";//The Era of Darkness
-        semList[5]="281AoC";//The Age of chaos
+        ArrayList<String> semList=new ArrayList<String>();
+        semList.add("282AoC");//The Age of chaos
+        semList.add("392SA");//The Sorcery Ages
+        semList.add("123EoT");//The Era of Trust
+        semList.add("82AoT");//The Aeon of Titans
+        semList.add("99EoD");//The Era of Darkness
+        semList.add("281AoC");//The Age of chaos
         //
         //Create Course
         Course[] courseList=new Course[14];
         courseList[0]=new Course("D001","Adapted Thaumatergy")
-            .addSemester(semList[0])
-            .addSemester(semList[2])
-            .addSemester(semList[3]);
+            .addSemester(semList.get(0))
+            .addSemester(semList.get(2))
+            .addSemester(semList.get(3));
         courseList[1]=new Course("D002","Celestial Witchery",22)
-            .addSemester(semList[2])
-            .addSemester(semList[3])
-            .addSemester(semList[4])
-            .addSemester(semList[5]);
+            .addSemester(semList.get(2))
+            .addSemester(semList.get(3))
+            .addSemester(semList.get(4))
+            .addSemester(semList.get(5));
         courseList[2]=new Course("D003","Black Herbs",33)
-            .addSemester(semList[0])
-            .addSemester(semList[2]);
+            .addSemester(semList.get(0))
+            .addSemester(semList.get(2));
         courseList[3]=new Course("D004","Demonic Animation")
-            .addSemester(semList[2])
-            .addSemester(semList[5]);
+            .addSemester(semList.get(2))
+            .addSemester(semList.get(5));
         courseList[4]=new Course("D005","Rudimentary Necromancy",22)
-            .addSemester(semList[1])
-            .addSemester(semList[3]);
+            .addSemester(semList.get(1))
+            .addSemester(semList.get(3));
         courseList[5]=new Course("D006","Dwarven Studies")
-            .addSemester(semList[0])
-            .addSemester(semList[1])
-            .addSemester(semList[4]);
+            .addSemester(semList.get(0))
+            .addSemester(semList.get(1))
+            .addSemester(semList.get(4));
         courseList[6]=new Course("D007","Unholy Occultism",55)
-            .addSemester(semList[0])
-            .addSemester(semList[3])
-            .addSemester(semList[4])
-            .addSemester(semList[5]);
+            .addSemester(semList.get(0))
+            .addSemester(semList.get(3))
+            .addSemester(semList.get(4))
+            .addSemester(semList.get(5));
         courseList[7]=new Course("D008","White Enchantment")
-            .addSemester(semList[0])
-            .addSemester(semList[3]);
+            .addSemester(semList.get(0))
+            .addSemester(semList.get(3));
         courseList[8]=new Course("D009","Lycantthropic Exorsism",22)
-            .addSemester(semList[1]);
+            .addSemester(semList.get(1));
         courseList[9]=new Course("D010","Inappropriate Summoning",22)
-            .addSemester(semList[2])
-            .addSemester(semList[5]);
+            .addSemester(semList.get(2))
+            .addSemester(semList.get(5));
         courseList[10]=new Course("D011","Forbidden Artifacts")
-            .addSemester(semList[4]);
+            .addSemester(semList.get(4));
         courseList[11]=new Course("D012","Progressive Writings",33)
-            .addSemester(semList[3]);
+            .addSemester(semList.get(3));
         courseList[12]=new Course("D013","Effective Symbolism")
-            .addSemester(semList[2])
-            .addSemester(semList[1]);
+            .addSemester(semList.get(2))
+            .addSemester(semList.get(1));
         courseList[13]=new Course("D013","Contemporary Magic",11)
-            .addSemester(semList[0]);
-    } 
+            .addSemester(semList.get(0));
+    }
 
 }

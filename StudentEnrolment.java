@@ -23,7 +23,6 @@ public class StudentEnrolment {
             return false;
         }
     }
-    //compare student
     public boolean compare(Student s,String sem) {
         if(s==null)
         {
@@ -59,6 +58,20 @@ public class StudentEnrolment {
             }
         }
         return false;
+    }
+    public boolean compare(Student s)
+    {
+        if(s==null)
+        {
+            return false;
+        }
+        if(s==student)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     //getter
     public Course getCourse(){
