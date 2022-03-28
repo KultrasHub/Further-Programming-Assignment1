@@ -11,12 +11,14 @@ public class Course {
         this.id=id;
         this.name=name;
         numberOfCredit=credit;
+        semList=new ArrayList<String>();
     }
     public Course(String id,String name)
     {
         this.id=id;
         this.name=name;
         numberOfCredit=0;
+        semList=new ArrayList<String>();
     }
     //Builder to add semester
     public Course addSemester(String sem)
@@ -24,7 +26,7 @@ public class Course {
         //check if sem exist in semList
         for(int i=0;i<semList.size();i++)
         {
-            if(sem==semList.get(i))
+            if(sem.equals(semList.get(i)))
             {
                 //the sem already exits inn semList
                 return this;
@@ -39,7 +41,7 @@ public class Course {
          //check if sem exist in semList
          for(int i=0;i<semList.size();i++)
          {
-             if(sem==semList.get(i))
+             if(sem.equals(semList.get(i)))
              {
                  //the sem already exits inn semList
                  return true;

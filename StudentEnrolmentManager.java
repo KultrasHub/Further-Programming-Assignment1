@@ -6,7 +6,7 @@ public interface StudentEnrolmentManager {
     public void add(Scanner s,ArrayList<Student>sList,ArrayList<Course> cList,ArrayList<String> semList);
     public void add(Scanner s,Student std,ArrayList<Course> cList,String sem);
     public void update(Scanner s,ArrayList<Student>sList,ArrayList<Course> cList,ArrayList<String> semList);
-    public void delete(ArrayList<StudentEnrolment> list,StudentEnrolment enrolment);
+    public void delete(Scanner s,Student std,ArrayList<Course> cList,String sem);
     //public void getOne
     public StudentEnrolment getOne(Student s);
     //Get all Student in 1 course
@@ -17,4 +17,6 @@ public interface StudentEnrolmentManager {
     public void printAll(Scanner s, ArrayList<Course> cList,ArrayList<String> sem);
     //print all Course of 1 student
     public void printAll(ArrayList<Student> sList,Scanner s,ArrayList<String> semList);
+    //display all Course offer in a sem
+    public void displayCoursesOfSem(Scanner s,ArrayList<Course> cList,ArrayList<String>semList);
 }

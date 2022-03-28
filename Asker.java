@@ -5,7 +5,7 @@ public class Asker {
     //asking 
     public static Student askForStudentID(Scanner s,ArrayList<Student> sList )
     {
-        System.out.println("Students: ");
+        System.out.println("Select a Student: ");
         sList.forEach( e -> System.out.println(e));
         //ask for student id
         System.out.println("Enter Student ID:");
@@ -15,7 +15,7 @@ public class Asker {
         if(result==-1)
         {
             //the id doesn't match any student in the list
-            System.out.println("You student input doesn't exist in out data:");
+            System.out.println("You student input doesn't exist in our data:");
             System.out.println("----------------------------");
             //provide option
             System.out.println("Please retry:(Enter 'exit' to return to main menu)");
@@ -40,7 +40,8 @@ public class Asker {
         }
         for(int i=0;i<sList.size();i++)
         {
-            if(sId==sList.get(i).getId())
+            System.out.println("Comparing:"+ sId+" =_= "+ sList.get(i).getId());
+            if(sId.equals(sList.get(i).getId()))
             {
                 //this is the match student
                 return i;
@@ -52,7 +53,7 @@ public class Asker {
     //course
     public static Course askForCourseID(Scanner s,ArrayList<Course> cList )
     {
-        System.out.println("Courses: ");
+        System.out.println("Select a Course: ");
         cList.forEach( e -> System.out.println(e));
         //ask for course id
         System.out.println("Enter Course ID:");
@@ -80,14 +81,14 @@ public class Asker {
     private static int getCourseId(ArrayList<Course> cList,String cId)
     {
         //check if user want to exit
-        if(cId=="exit")
+        if(cId.equals("exit"))
         {
             //user want to exit
             return -2;
         }
         for(int i=0;i<cList.size();i++)
         {
-            if(cId==cList.get(i).getId())
+            if(cId.equals(cList.get(i).getId()))
             {
                 //this is the match student
                 return i;
@@ -128,14 +129,14 @@ public class Asker {
     private static int getSemesterId(ArrayList<String> semList,String semId)
     {
         //check if user want to exit
-        if(semId=="exit")
+        if(semId.equals("exit"))
         {
             //user want to exit
             return -2;
         }
         for(int i=0;i<semList.size();i++)
         {
-            if(semId==semList.get(i))
+            if(semId.equals(semList.get(i)))
             {
                 //this is the match student
                 return i;

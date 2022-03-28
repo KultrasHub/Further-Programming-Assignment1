@@ -11,7 +11,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     
     //Condition checking
     //check if an enrolment has already existed in list
-    private static boolean checkExisted(ArrayList<StudentEnrolment> list, StudentEnrolment enrolment) 
+    private boolean checkExisted(ArrayList<StudentEnrolment> list, StudentEnrolment enrolment) 
     {
         for(int i=0;i<list.size();i++)
         {
@@ -34,6 +34,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         //ask for Course id
         Course course=Asker.askForCourseID(s, cList);
         //ask for Semester id
+        System.out.println("Semester available for "+course.toString());
         String sem=Asker.askForSemesterID(s, course.getSem());
         //Create enrolment
         StudentEnrolment se=new StudentEnrolment(student, course, sem);
@@ -51,63 +52,77 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public void add(Scanner s, Student std, ArrayList<Course> cList, String sem) {
         //Asking for info and extract data
         System.out.println("----------------------------");
-        //display course a
+        //display course that offers in the given semester
+        System.out.println("Courses offered in Semester: "+sem);
+        ArrayList<Course> temp=new ArrayList<Course>();
+        for(int i=0;i<cList.size();i++)
+        {
+            if(cList.get(i).checkSem(sem))
+            {
+                //this course is available in the given sem
+                temp.add(cList.get(i));
+            }
+        }
+        //get course
+        Course course=Asker.askForCourseID(s, temp);
+        StudentEnrolment se=new StudentEnrolment(std, course, sem);
+        //check if enrolment has addable
+        if(checkExisted(enrolmentList, se)){
+            enrolmentList.add(se);
+        }
+        else{
+            //fail to add enrolment
+            System.out.println("Fail to add enrolment to enrolment data");
+        }
     }
 
     @Override
     public void update(Scanner s,ArrayList<Student>sList,ArrayList<Course> cList,ArrayList<String> semList) {
-        //display a list of student and ask to select a student
-        for(int i=0;i<sList.size();i++)
-        {
-            System.out.println(i+". "+sList.get(i).toString());
-        }
-        int selected=Asker.askForSelection(s, sList.size());
         //get student id 
-        Student student=sList.get(selected);
+        Student student=Asker.askForStudentID(s, sList);
         //ask for semester
         String sem=Asker.askForSemesterID(s, semList);
+        //
+        ArrayList<Course> enrolled=new ArrayList<Course>();
         //print courses of the selected student
         int count=0;//
         for(int i=0;i<enrolmentList.size();i++)
         {
             if(enrolmentList.get(i).compare(student,sem)){
                 //match student
+                enrolled.add(enrolmentList.get(i).getCourse());
                 //print course
                 System.out.println(count+". "+ enrolmentList.get(i).getCourse().toString());
                 count++;
             }
         }
         //ask for option 
-        System.out.println("0. Add a course");
-        System.out.println("1. Delete a course");
+        System.out.println("0. Add a course to student enrolment");
+        System.out.println("1. Delete a course from student enrolment");
         int option=Asker.askForSelection(s, 2);//2 option
         if(option==0)
         {
             //adding a course
-            //should Display course that is not in the student 
+            add(s,student,cList,sem);
         }
         else if(option==1)
         {
             //Delete a course
-            
+            delete(s, student, enrolled, sem);
         }
+        enrolled.clear();
     }
 
     @Override
-    public void delete(ArrayList<StudentEnrolment> list, StudentEnrolment enrolment) {
-        // TODO Auto-generated method stub
-        //loop through list and delete the enrolment
-        for(int i=0;i<list.size();i++)
-        {
-            if(enrolment.compare(list.get(i)))
-            {
-                //this is the enrolment to be deleted
-                list.remove(i);
-                return;
-            }
-        }
-        //enrolment cannot be found in list
-        System.out.println("Enrolment cannot be found in enrolment data");
+    public void delete(Scanner s,Student std,ArrayList<Course> cList,String sem) {
+        //
+        //Asking for info and extract data
+        System.out.println("----------------------------");
+        //display course Student selected in the given semester
+        System.out.println("Select the course you want to remove from "+std.toString()+" enrollment");
+        int selected=Asker.askForSelection(s, cList.size());
+        //selected is the index to remove an enrollment
+        enrolmentList.remove(selected);
     }
     
     @Override
@@ -213,7 +228,27 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
              //use get all to get data and save data to csv
          }
     }
+    
+    @Override
+    public void displayCoursesOfSem(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
+        
+        System.out.println("----------------------------");
+        //ask for sem
+        String sem=Asker.askForSemesterID(s, semList);
+        System.out.println("Courses Offered in Semester: "+sem);
+        //display all courses that is available for this sem
+        for(int i=0;i<cList.size();i++)
+        {
+            if(cList.get(i).checkSem(sem))
+            {
+                //this course is offered for this semester
+                System.out.println(cList.toString());
+            }
+        }
+    }
     public static void main(String[] args) {
+        //Scanner
+        Scanner s=new Scanner(System.in);
         //Initualize enrolment 
         EnrolmentSystem enrolment=new EnrolmentSystem();
         //Create Students
@@ -238,51 +273,60 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         semList.add("281AoC");//The Age of chaos
         //
         //Create Course
-        Course[] courseList=new Course[14];
-        courseList[0]=new Course("D001","Adapted Thaumatergy")
+        ArrayList<Course> courseList=new ArrayList<Course>();
+        courseList.add(new Course("D001","Adapted Thaumatergy")
             .addSemester(semList.get(0))
             .addSemester(semList.get(2))
-            .addSemester(semList.get(3));
-        courseList[1]=new Course("D002","Celestial Witchery",22)
+            .addSemester(semList.get(3)));
+        courseList.add(new Course("D002","Celestial Witchery",22)
             .addSemester(semList.get(2))
             .addSemester(semList.get(3))
             .addSemester(semList.get(4))
-            .addSemester(semList.get(5));
-        courseList[2]=new Course("D003","Black Herbs",33)
+            .addSemester(semList.get(5)));
+        courseList.add(new Course("D003","Black Herbs",33)
             .addSemester(semList.get(0))
-            .addSemester(semList.get(2));
-        courseList[3]=new Course("D004","Demonic Animation")
+            .addSemester(semList.get(2)));
+        courseList.add(new Course("D004","Demonic Animation")
             .addSemester(semList.get(2))
-            .addSemester(semList.get(5));
-        courseList[4]=new Course("D005","Rudimentary Necromancy",22)
+            .addSemester(semList.get(5)));
+        courseList.add(new Course("D005","Rudimentary Necromancy",22)
             .addSemester(semList.get(1))
-            .addSemester(semList.get(3));
-        courseList[5]=new Course("D006","Dwarven Studies")
+            .addSemester(semList.get(3)));
+        courseList.add(new Course("D006","Dwarven Studies")
             .addSemester(semList.get(0))
             .addSemester(semList.get(1))
-            .addSemester(semList.get(4));
-        courseList[6]=new Course("D007","Unholy Occultism",55)
+            .addSemester(semList.get(4)));
+        courseList.add(new Course("D007","Unholy Occultism",55)
             .addSemester(semList.get(0))
             .addSemester(semList.get(3))
             .addSemester(semList.get(4))
-            .addSemester(semList.get(5));
-        courseList[7]=new Course("D008","White Enchantment")
+            .addSemester(semList.get(5)));
+        courseList.add(new Course("D008","White Enchantment")
             .addSemester(semList.get(0))
-            .addSemester(semList.get(3));
-        courseList[8]=new Course("D009","Lycantthropic Exorsism",22)
-            .addSemester(semList.get(1));
-        courseList[9]=new Course("D010","Inappropriate Summoning",22)
+            .addSemester(semList.get(3)));
+        courseList.add(new Course("D009","Lycantthropic Exorsism",22)
+            .addSemester(semList.get(1)));
+        courseList.add(new Course("D010","Inappropriate Summoning",22)
             .addSemester(semList.get(2))
-            .addSemester(semList.get(5));
-        courseList[10]=new Course("D011","Forbidden Artifacts")
-            .addSemester(semList.get(4));
-        courseList[11]=new Course("D012","Progressive Writings",33)
-            .addSemester(semList.get(3));
-        courseList[12]=new Course("D013","Effective Symbolism")
+            .addSemester(semList.get(5)));
+        courseList.add(new Course("D011","Forbidden Artifacts")
+            .addSemester(semList.get(4)));
+        courseList.add(new Course("D012","Progressive Writings",33)
+            .addSemester(semList.get(3)));
+        courseList.add(new Course("D013","Effective Symbolism")
             .addSemester(semList.get(2))
-            .addSemester(semList.get(1));
-        courseList[13]=new Course("D013","Contemporary Magic",11)
-            .addSemester(semList.get(0));
+            .addSemester(semList.get(1)));
+        courseList.add(new Course("D013","Contemporary Magic",11)
+            .addSemester(semList.get(0)));
+        
+        //Create enrollment and add to enrollment system
+        enrolment.add(s, studentList, courseList, semList);
+        enrolment.add(s, studentList, courseList, semList);
+        enrolment.add(s, studentList, courseList, semList);
+        enrolment.add(s, studentList, courseList, semList);
+        enrolment.add(s, studentList, courseList, semList);
+        //
+        s.close();
     }
 
 }

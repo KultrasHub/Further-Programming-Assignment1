@@ -15,7 +15,7 @@ public class StudentEnrolment {
             return false;
         }
         //2 enrolment is similar if student,enrolment,semester is similar
-        if(se.student==student&&se.course==course&&se.semester==semester)
+        if(se.student==student&&se.course==course&&se.semester.equals(semester))
         {
             return true;//similar
         }
@@ -30,7 +30,7 @@ public class StudentEnrolment {
         }
         if(s==student)
         {
-            if(semester==sem)
+            if(semester.equals(sem))
             {
             return true;
             }
@@ -52,7 +52,7 @@ public class StudentEnrolment {
         if(c==course)
         {
             //check sem
-            if(sem==semester)
+            if(sem.equals(semester))
             {
                 return true;
             }
