@@ -27,4 +27,8 @@ public class Student
     public String toString() {
         return "Student: "+id+ " - " +name+ " - "+birthDate;
     }
+    public String toCSVString()
+    {
+        return id+","+name+","+birthDate+"\n";
+    }
 }

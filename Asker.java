@@ -184,4 +184,22 @@ public class Asker {
             return askForSelection(s, selectionSize);
         }
     }
+    //Type in a path for a file
+    public static String askForPath(Scanner s)
+    {
+        System.out.println("----------------------------");
+        System.out.println("Enter the path of the file to Create new file:");
+        String input=s.nextLine();
+        if(input==null||input.equals(""))
+        {
+            //innput is empty
+            System.out.println("You cannot leave file path empty");
+            System.out.println("----------------------------");
+            System.out.println("Please retry enter a file path:");
+            return askForPath(s);
+        }
+        else{
+            return input;
+        }
+    } 
 }

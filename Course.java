@@ -62,4 +62,8 @@ public class Course {
     public String toString() {
         return "Course: "+id+" - "+name;
     }
+    public String toCSVString()
+    {
+        return id+","+name+","+numberOfCredit+"\n";
+    }
 }
