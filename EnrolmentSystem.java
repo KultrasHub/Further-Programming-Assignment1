@@ -33,11 +33,26 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("----------------------------");
         // ask for student id
         Student student = Asker.askForStudentID(s, sList);
+        if(student==null)
+        {
+            System.out.println("There may be no student in the given List");
+            return;//
+        }
         // ask for Course id
         Course course = Asker.askForCourseID(s, cList);
+        if(course==null)
+        {
+            System.out.println("There may be no courses in the given List");
+            return;//
+        }
         // ask for Semester id
         System.out.println("Semester available for " + course.toString());
         String sem = Asker.askForSemesterID(s, course.getSem());
+        if(sem==null)
+        {
+            System.out.println("There may be no semesters in the given List");
+            return;//
+        }
         // Create enrolment
         StudentEnrolment se = new StudentEnrolment(student, course, sem);
         // check if enrolment has addable
@@ -65,6 +80,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         // get course
         Course course = Asker.askForCourseID(s, temp);
+        if(course==null)
+        {
+            System.out.println("There may be no courses that is offered in the given semester");
+            return;//
+        }
         StudentEnrolment se = new StudentEnrolment(std, course, sem);
         // check if enrolment has addable
         if (checkExisted(enrolmentList, se)) {
@@ -79,8 +99,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public void update(Scanner s, ArrayList<Student> sList, ArrayList<Course> cList, ArrayList<String> semList) {
         // get student id
         Student student = Asker.askForStudentID(s, sList);
+        if(student==null)
+        {
+            System.out.println("There may be no student in the given List");
+            return;//
+        }
         // ask for semester
         String sem = Asker.askForSemesterID(s, semList);
+        if(sem==null)
+        {
+            System.out.println("There may be no semester in the given List");
+            return;//
+        }
         //
         ArrayList<Course> enrolled = new ArrayList<Course>();
         // print courses of the selected student
@@ -119,7 +149,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         // selected is the index to remove an enrollment
         enrolmentList.remove(selected);
     }
-
     @Override
     public StudentEnrolment getOne(Student s) {
         // get the first enrollment of the student
@@ -166,8 +195,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Display all student of a course");
         // ask for Course
         Course c = Asker.askForCourseID(s, cList);
+        if(c==null)
+        {
+            System.out.println("There may be no courses in the given List");
+            return;//
+        }
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
+        if(sem==null)
+        {
+            System.out.println("There may be no semesters in the given List");
+            return;//
+        }
         // find all student of has course of sem
         System.out.println("Students in " + c.toString() + " in " + sem);
         // array of student
@@ -190,7 +229,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             // use get all to get data and save data to csv
             writeStudentDataToCSV(s, students);
         }
-        // open main menu on finish
     }
 
     @Override
@@ -199,8 +237,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("Display all courses of a student");
         // ask for student
         Student student = Asker.askForStudentID(s, sList);
+        if(student==null)
+        {
+            System.out.println("There may be no students in the given List");
+            return;//
+        }
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
+        if(sem==null)
+        {
+            System.out.println("There may be no sem in the given List");
+            return;//
+        }
         // find all course of the student
         System.out.println("course of " + student.toString() + " in " + sem);
         // Save courses to an array List
@@ -223,7 +271,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             // use get all to get data and save data to csv
             writeDataToCSV(s, courses);
         }
-        // after finish => return to main menu
     }
 
     @Override
@@ -232,6 +279,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("----------------------------");
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
+        if(sem==null)
+        {
+            System.out.println("There may be no sem in the given List");
+            return;//
+        }
         System.out.println("Courses Offered in Semester: " + sem);
         // display all courses that is available for this sem
         ArrayList<Course> courses=new ArrayList<Course>();
@@ -253,7 +305,6 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             // use get all to get data and save data to csv
             writeDataToCSV(s, courses);
         }
-        //open main menu when done
     }
 
     private void writeStudentDataToCSV(Scanner s, ArrayList<Student> sList) {
@@ -367,17 +418,14 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         courseList.add(new Course("D014", "Contemporary Magic", 11)
                 .addSemester(semList.get(0)));
 
-        // Create enrollment and add to enrollment system
-        enrolment.add(s, studentList, courseList, semList);
-        enrolment.add(s, studentList, courseList, semList);
-        enrolment.add(s, studentList, courseList, semList);
-        enrolment.add(s, studentList, courseList, semList);
-        enrolment.add(s, studentList, courseList, semList);
-        enrolment.add(s, studentList, courseList, semList);
-        //
-        enrolment.printAll(studentList, s, semList);
-        enrolment.printAll(s, courseList, semList);
-        enrolment.displayCoursesOfSem(s, courseList, semList);
+        //Create Main menu
+        MainMenu.getMainMenu().addEnrolmentSystem(enrolment)
+                            .addStudentList(studentList)
+                            .addCourseList(courseList)
+                            .addSemList(semList);
+        //display main menu
+        MainMenu.getMainMenu().displayMainMenu(s);
+
         s.close();
     }
 

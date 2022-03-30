@@ -5,6 +5,10 @@ public class Asker {
     //asking 
     public static Student askForStudentID(Scanner s,ArrayList<Student> sList )
     {
+        if(sList.size()==0)
+        {
+            return null;
+        }
         System.out.println("Select a Student: ");
         sList.forEach( e -> System.out.println(e));
         //ask for student id
@@ -25,6 +29,7 @@ public class Asker {
         else if(result==-2)
         {
             //user want to exit
+            return null;
         }
         //return
         return sList.get(result);
@@ -40,7 +45,7 @@ public class Asker {
         }
         for(int i=0;i<sList.size();i++)
         {
-            System.out.println("Comparing:"+ sId+" =_= "+ sList.get(i).getId());
+            //System.out.println("Comparing:"+ sId+" =_= "+ sList.get(i).getId());
             if(sId.equals(sList.get(i).getId()))
             {
                 //this is the match student
@@ -53,6 +58,10 @@ public class Asker {
     //course
     public static Course askForCourseID(Scanner s,ArrayList<Course> cList )
     {
+        if(cList.size()==0)
+        {
+            return null;
+        }
         System.out.println("Select a Course: ");
         cList.forEach( e -> System.out.println(e));
         //ask for course id
@@ -73,6 +82,7 @@ public class Asker {
         else if(result==-2)
         {
             //user want to exit
+            return null;
         }
         //return
         return cList.get(result);
@@ -101,6 +111,10 @@ public class Asker {
     //course
     public static String askForSemesterID(Scanner s,ArrayList<String> semList )
     {
+        if(semList.size()==0)
+        {
+            return null;
+        }
         System.out.println("available semester");
         semList.forEach( e -> System.out.println(e));
         //ask for student id
