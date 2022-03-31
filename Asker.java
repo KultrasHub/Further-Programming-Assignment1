@@ -162,6 +162,10 @@ public class Asker {
     //Select an option
     public static int askForSelection(Scanner s,int selectionSize)
     {
+        if(selectionSize<=0)
+        {
+            return -1;//there are no value to select
+        }
         System.out.println("Enter Your Option:");
         String opt=s.nextLine();
         //check for null

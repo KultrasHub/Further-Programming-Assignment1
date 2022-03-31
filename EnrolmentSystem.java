@@ -146,8 +146,49 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         // display course Student selected in the given semester
         System.out.println("Select the course you want to remove from " + std.toString() + " enrollment");
         int selected = Asker.askForSelection(s, cList.size());
+        if(selected<0)
+        {
+            System.out.println("the student has no courses to display in sem: "+sem);
+        }   
         // selected is the index to remove an enrollment
         enrolmentList.remove(selected);
+    }
+    @Override
+    public void delete(Scanner s, ArrayList<Student> sList, ArrayList<Course> cList, ArrayList<String> semList) {
+        // Asking for info and extract data
+        System.out.println("----------------------------");
+        //ask for a student
+        System.out.println("Pick a student whose enrolment you want to remove:");
+        Student std=Asker.askForStudentID(s, sList);
+        if(std==null)
+        {
+            System.out.println("your student list is empty");
+            return;
+        }
+        //display all courses that this student has enrolled in
+        int count=0;
+        ArrayList<Integer> indexList=new ArrayList<Integer>();
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            if(enrolmentList.get(i).compare(std))
+            {
+                //this is enrolment of the student
+                System.out.println(count+". "+enrolmentList.get(i).toString());
+                count++;
+                //add inndex
+                indexList.add(i);
+            }
+        }
+        System.out.println("Please select the enrollment you wish to remove:");
+        int opt=Asker.askForSelection(s, count);
+        if(opt<0)
+        {
+            System.out.println("the student has not enrolled in our system!");
+            return;
+        }
+        //remove the enrolment at index
+        enrolmentList.remove((int)indexList.get(opt));
+
     }
     @Override
     public StudentEnrolment getOne(Student s) {
@@ -188,8 +229,17 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return list;
     }
-
-    @Override
+//print all enrollment in all sem
+    public void printAll()
+    {
+        System.out.println("----------------------------");
+        System.out.println("All enrolment");
+        for(int i=0;i<enrolmentList.size();i++)
+        {
+            System.out.println(enrolmentList.get(i).toString());
+        }
+    }
+//print all students of a courses in a sem
     public void printAll(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
         System.out.println("----------------------------");
         System.out.println("Display all student of a course");
@@ -230,8 +280,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writeStudentDataToCSV(s, students);
         }
     }
-
-    @Override
+//print all courses of a student in a sem
     public void printAll(ArrayList<Student> sList, Scanner s, ArrayList<String> semList) {
         System.out.println("----------------------------");
         System.out.println("Display all courses of a student");
@@ -272,8 +321,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writeDataToCSV(s, courses);
         }
     }
-
-    @Override
+    //print all courses that is offered in a sem
     public void displayCoursesOfSem(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
 
         System.out.println("----------------------------");
