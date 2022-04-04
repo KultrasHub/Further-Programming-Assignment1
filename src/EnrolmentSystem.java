@@ -1,3 +1,5 @@
+package src;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -25,6 +27,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         return true;
     }
 
+    // for testing purpose
+    public ArrayList<StudentEnrolment> getEnrolment() {
+        return enrolmentList;
+    }
+
     // Functionality
     @Override
     public void add(Scanner s, ArrayList<Student> sList, ArrayList<Course> cList, ArrayList<String> semList) {
@@ -32,23 +39,20 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println("----------------------------");
         // ask for student id
         Student student = Asker.askForStudentID(s, sList);
-        if(student==null)
-        {
+        if (student == null) {
             System.out.println("There may be no student in the given List");
             return;//
         }
         // ask for Course id
         Course course = Asker.askForCourseID(s, cList);
-        if(course==null)
-        {
+        if (course == null) {
             System.out.println("There may be no courses in the given List");
             return;//
         }
         // ask for Semester id
         System.out.println("Semester available for " + course.toString());
         String sem = Asker.askForSemesterID(s, course.getSem());
-        if(sem==null)
-        {
+        if (sem == null) {
             System.out.println("There may be no semesters in the given List");
             return;//
         }
@@ -79,8 +83,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         // get course
         Course course = Asker.askForCourseID(s, temp);
-        if(course==null)
-        {
+        if (course == null) {
             System.out.println("There may be no courses that is offered in the given semester");
             return;//
         }
@@ -98,18 +101,17 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     public void update(Scanner s, ArrayList<Student> sList, ArrayList<Course> cList, ArrayList<String> semList) {
         // get student id
         Student student = Asker.askForStudentID(s, sList);
-        if(student==null)
-        {
+        if (student == null) {
             System.out.println("There may be no student in the given List");
             return;//
         }
         // ask for semester
         String sem = Asker.askForSemesterID(s, semList);
-        if(sem==null)
-        {
+        if (sem == null) {
             System.out.println("There may be no semester in the given List");
             return;//
         }
+        System.out.println("Courses of Student " + student.getId() + " in " + sem);
         //
         ArrayList<Course> enrolled = new ArrayList<Course>();
         // print courses of the selected student
@@ -124,6 +126,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }
         // ask for option
+        System.out.println("----------------------------");
         System.out.println("0. Add a course to student enrolment");
         System.out.println("1. Delete a course from student enrolment");
         int option = Asker.askForSelection(s, 2);// 2 option
@@ -131,6 +134,10 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             // adding a course
             add(s, student, cList, sem);
         } else if (option == 1) {
+            if (enrolled.size() == 0) {
+                System.out.println("Student: " + student.getId() + " has no course in sem " + sem);
+                return;// no course to remove
+            }
             // Delete a course
             delete(s, student, enrolled, sem);
         }
@@ -143,52 +150,53 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         // Asking for info and extract data
         System.out.println("----------------------------");
         // display course Student selected in the given semester
+        // print the courses
+        for (int i = 0; i < cList.size(); i++) {
+            System.err.println(i + ". " + cList.get(i).toString());
+        }
         System.out.println("Select the course you want to remove from " + std.toString() + " enrollment");
         int selected = Asker.askForSelection(s, cList.size());
-        if(selected<0)
-        {
-            System.out.println("the student has no courses to display in sem: "+sem);
-        }   
+        if (selected < 0) {
+            System.out.println("the student has no courses to display in sem: " + sem);
+        }
         // selected is the index to remove an enrollment
         enrolmentList.remove(selected);
     }
+
     @Override
     public void delete(Scanner s, ArrayList<Student> sList, ArrayList<Course> cList, ArrayList<String> semList) {
         // Asking for info and extract data
         System.out.println("----------------------------");
-        //ask for a student
+        // ask for a student
         System.out.println("Pick a student whose enrolment you want to remove:");
-        Student std=Asker.askForStudentID(s, sList);
-        if(std==null)
-        {
+        Student std = Asker.askForStudentID(s, sList);
+        if (std == null) {
             System.out.println("your student list is empty");
             return;
         }
-        //display all courses that this student has enrolled in
-        int count=0;
-        ArrayList<Integer> indexList=new ArrayList<Integer>();
-        for(int i=0;i<enrolmentList.size();i++)
-        {
-            if(enrolmentList.get(i).compare(std))
-            {
-                //this is enrolment of the student
-                System.out.println(count+". "+enrolmentList.get(i).toString());
+        // display all courses that this student has enrolled in
+        int count = 0;
+        ArrayList<Integer> indexList = new ArrayList<Integer>();
+        for (int i = 0; i < enrolmentList.size(); i++) {
+            if (enrolmentList.get(i).compare(std)) {
+                // this is enrolment of the student
+                System.out.println(count + ". " + enrolmentList.get(i).toString());
                 count++;
-                //add inndex
+                // add inndex
                 indexList.add(i);
             }
         }
         System.out.println("Please select the enrollment you wish to remove:");
-        int opt=Asker.askForSelection(s, count);
-        if(opt<0)
-        {
+        int opt = Asker.askForSelection(s, count);
+        if (opt < 0) {
             System.out.println("the student has not enrolled in our system!");
             return;
         }
-        //remove the enrolment at index
-        enrolmentList.remove((int)indexList.get(opt));
+        // remove the enrolment at index
+        enrolmentList.remove((int) indexList.get(opt));
 
     }
+
     @Override
     public StudentEnrolment getOne(Student s) {
         // get the first enrollment of the student
@@ -228,31 +236,29 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
         return list;
     }
-//print all enrollment in all sem
-    public void printAll()
-    {
+
+    // print all enrollment in all sem
+    public void printAll() {
         System.out.println("----------------------------");
         System.out.println("All enrolment");
-        for(int i=0;i<enrolmentList.size();i++)
-        {
+        for (int i = 0; i < enrolmentList.size(); i++) {
             System.out.println(enrolmentList.get(i).toString());
         }
     }
-//print all students of a courses in a sem
+
+    // print all students of a courses in a sem
     public void printAll(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
         System.out.println("----------------------------");
         System.out.println("Display all student of a course");
         // ask for Course
         Course c = Asker.askForCourseID(s, cList);
-        if(c==null)
-        {
+        if (c == null) {
             System.out.println("There may be no courses in the given List");
             return;//
         }
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
-        if(sem==null)
-        {
+        if (sem == null) {
             System.out.println("There may be no semesters in the given List");
             return;//
         }
@@ -279,21 +285,20 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writeStudentDataToCSV(s, students);
         }
     }
-//print all courses of a student in a sem
+
+    // print all courses of a student in a sem
     public void printAll(ArrayList<Student> sList, Scanner s, ArrayList<String> semList) {
         System.out.println("----------------------------");
         System.out.println("Display all courses of a student");
         // ask for student
         Student student = Asker.askForStudentID(s, sList);
-        if(student==null)
-        {
+        if (student == null) {
             System.out.println("There may be no students in the given List");
             return;//
         }
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
-        if(sem==null)
-        {
+        if (sem == null) {
             System.out.println("There may be no sem in the given List");
             return;//
         }
@@ -320,25 +325,25 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writeDataToCSV(s, courses);
         }
     }
-    //print all courses that is offered in a sem
+
+    // print all courses that is offered in a sem
     public void displayCoursesOfSem(Scanner s, ArrayList<Course> cList, ArrayList<String> semList) {
 
         System.out.println("----------------------------");
         // ask for sem
         String sem = Asker.askForSemesterID(s, semList);
-        if(sem==null)
-        {
+        if (sem == null) {
             System.out.println("There may be no sem in the given List");
             return;//
         }
         System.out.println("Courses Offered in Semester: " + sem);
         // display all courses that is available for this sem
-        ArrayList<Course> courses=new ArrayList<Course>();
+        ArrayList<Course> courses = new ArrayList<Course>();
         for (int i = 0; i < cList.size(); i++) {
             if (cList.get(i).checkSem(sem)) {
                 // this course is offered for this semester
                 System.out.println(cList.get(i).toString());
-                //add
+                // add
                 courses.add(cList.get(i));
             }
         }
@@ -367,7 +372,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writer.flush();
             writer.close();
             System.out.println("Saving complete");
-            System.out.println("Your data is save in:"+filePath);
+            System.out.println("Your data is save in:" + filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -386,7 +391,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             writer.flush();
             writer.close();
             System.out.println("Saving complete");
-            System.out.println("Your data is save in:"+filePath);
+            System.out.println("Your data is save in:" + filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -465,12 +470,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         courseList.add(new Course("D014", "Contemporary Magic", 11)
                 .addSemester(semList.get(0)));
 
-        //Create Main menu
+        // Create Main menu
         MainMenu.getMainMenu().addEnrolmentSystem(enrolment)
-                            .addStudentList(studentList)
-                            .addCourseList(courseList)
-                            .addSemList(semList);
-        //display main menu
+                .addStudentList(studentList)
+                .addCourseList(courseList)
+                .addSemList(semList);
+        // display main menu
         MainMenu.getMainMenu().displayMainMenu(s);
 
         s.close();

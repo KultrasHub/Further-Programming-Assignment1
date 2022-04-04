@@ -1,3 +1,4 @@
+package src;
 public class StudentEnrolment {
     private Student student;
     private Course course;
@@ -70,10 +71,13 @@ public class StudentEnrolment {
     public Student getStudent() {
         return student;
     }
-
+    public String getSem()
+    {
+        return semester;
+    }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
+
         return student.toString()+" of "+course.toString()+" in "+semester;
     }
 }

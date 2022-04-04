@@ -1,3 +1,4 @@
+package src;
 import java.util.*;
 
 public class MainMenu {
@@ -40,6 +41,23 @@ public class MainMenu {
         semList=sems;
         return instance;
     }
+    //getter
+    public ArrayList<Student> getStudentList()
+    {
+        return sList;
+    }
+    public ArrayList<Course> getCourseList()
+    {
+        return cList;
+    }
+    public ArrayList<String> getSemList()
+    {
+        return semList;
+    }
+    public EnrolmentSystem getSystem()
+    {
+        return sys;
+    }
     //Display main menu
     public void displayMainMenu(Scanner s)
     {
@@ -59,7 +77,7 @@ public class MainMenu {
         System.out.println("6. Print all courses offered in a semester");
         System.out.println("7. Exit Program");
         System.out.println("Enter an id of option:");
-        int opt=Asker.askForSelection(s, 7);
+        int opt=Asker.askForSelection(s, 8);
         if(opt==0)
         {
             //adding a new enrolment

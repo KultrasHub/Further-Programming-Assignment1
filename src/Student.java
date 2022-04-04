@@ -1,3 +1,4 @@
+package src;
 public class Student
 {
     private String id;
@@ -22,6 +23,14 @@ public class Student
     public String getId()
     {
         return id;
+    }
+    public String getName()
+    {
+        return name;
+    }
+    public String getBirthDay()
+    {
+        return birthDate;
     }
     @Override
     public String toString() {

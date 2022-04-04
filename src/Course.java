@@ -1,3 +1,4 @@
+package src;
 import java.util.ArrayList;
 
 public class Course {
@@ -53,6 +54,14 @@ public class Course {
     public String getId()
     {
         return id;
+    }
+    public String getName()
+    {
+        return name;
+    }
+    public int getCredit()
+    {
+        return numberOfCredit;
     }
     public ArrayList<String> getSem()
     {
